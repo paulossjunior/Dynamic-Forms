@@ -1,0 +1,54 @@
+<template>
+  <div class="min-h-screen bg-gray-50 font-sans">
+    <nav class="bg-white border-b border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex">
+            <div class="flex-shrink-0 flex items-center">
+              <div class="h-8 w-8 bg-green-500 rounded-lg flex items-center justify-center mr-2">
+                <span class="text-white font-bold">DF</span>
+              </div>
+              <h1 class="text-xl font-semibold text-gray-900">Dynamic Forms</h1>
+            </div>
+            <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+              <router-link 
+                to="/" 
+                class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200"
+                active-class="border-green-500 text-gray-900"
+              >
+                People List
+              </router-link>
+              <router-link 
+                to="/create" 
+                class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200"
+                active-class="border-green-500 text-gray-900"
+              >
+                New Person
+              </router-link>
+              <router-link 
+                to="/admin" 
+                class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200"
+                active-class="border-green-500 text-gray-900"
+              >
+                Admin Fields
+              </router-link>
+              <router-link 
+                to="/builder" 
+                class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200"
+                active-class="border-green-500 text-gray-900"
+              >
+                Form Builder
+              </router-link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="py-10">
+      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <router-view></router-view>
+      </div>
+    </main>
+  </div>
+</template>

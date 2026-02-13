@@ -107,3 +107,83 @@ def get_form(form_id: int, db: Session = Depends(get_db)):
     # Sort fields by order
     form.fields.sort(key=lambda x: x.order)
     return form
+
+# --- Analytics Endpoints ---
+
+@app.get("/api/analytics/field-stats")
+def get_field_stats(db: Session = Depends(get_db)):
+    """
+    Aggregate statistics for dynamic fields across all people.
+    Returns value counts for select/multiselect fields and stats for numeric fields.
+    """
+    # Get all active fields
+    fields = db.query(models.CustomFieldDefinition).filter(
+        models.CustomFieldDefinition.is_active == True
+    ).all()
+    
+    # Get all people with their custom data
+    people = db.query(models.Person).all()
+    
+    stats = []
+    
+    for field in fields:
+        field_stats = {
+            "field_key": field.key_name,
+            "field_label": field.label,
+            "field_type": field.field_type,
+            "total_responses": 0,
+            "value_counts": {},
+            "numeric_stats": None
+        }
+        
+        values = []
+        for person in people:
+            try:
+                custom_data = json.loads(person.custom_data)
+                if field.key_name in custom_data:
+                    value = custom_data[field.key_name]
+                    if value is not None and value != "":
+                        values.append(value)
+            except:
+                continue
+        
+        field_stats["total_responses"] = len(values)
+        
+        # Aggregate based on field type
+        if field.field_type in ['select', 'radio', 'checkbox']:
+            # Count occurrences of each value
+            for value in values:
+                value_str = str(value)
+                field_stats["value_counts"][value_str] = field_stats["value_counts"].get(value_str, 0) + 1
+        
+        elif field.field_type == 'multiselect':
+            # Flatten and count array values
+            for value in values:
+                if isinstance(value, list):
+                    for item in value:
+                        item_str = str(item)
+                        field_stats["value_counts"][item_str] = field_stats["value_counts"].get(item_str, 0) + 1
+        
+        elif field.field_type == 'number':
+            # Calculate numeric statistics
+            numeric_values = []
+            for value in values:
+                try:
+                    numeric_values.append(float(value))
+                except:
+                    continue
+            
+            if numeric_values:
+                field_stats["numeric_stats"] = {
+                    "min": min(numeric_values),
+                    "max": max(numeric_values),
+                    "avg": sum(numeric_values) / len(numeric_values),
+                    "count": len(numeric_values)
+                }
+        
+        stats.append(field_stats)
+    
+    return {
+        "total_people": len(people),
+        "field_stats": stats
+    }

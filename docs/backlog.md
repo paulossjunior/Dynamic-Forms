@@ -61,6 +61,7 @@
 **User Stories**:
 - [ ] US-004.1: Criar e Gerenciar Seções (Admin)
 - [ ] US-004.2: Visualizar Formulário com Seções (Usuário)
+- [ ] US-004.3: Criar Seções Inline no Form Builder (Admin)
 
 **Tasks Técnicas**:
 - [ ] TASK-004.1.1: Implementar Domain Layer - Section Entity
@@ -68,10 +69,24 @@
 - [ ] TASK-004.1.3: Implementar Infrastructure Layer - Database & Repository
 - [ ] TASK-004.1.4: Implementar UI Layer - Section Management
 - [ ] TASK-004.2.1: Implementar UI - Form Renderer com Seções
+- [ ] TASK-004.3.1: Backend - Suporte a criação aninhada de Seções
+- [ ] TASK-004.3.2: Frontend - UI de criação de Seções Inline
 
 ---
 
 ## 📝 User Stories Detalhadas
+
+### US-004.3: Criar Seções Inline no Form Builder
+
+**Como** administrador criando um formulário
+**Quero** poder definir novas seções diretamente na tela de criação
+**Para** não precisar salvar o formulário vazio, sair, criar seções e voltar
+
+**Critérios de Aceitação**:
+- [ ] Dado que estou no Form Builder, quando clico em "Adicionar Seção", então posso digitar o nome da seção
+- [ ] Dado que criei uma seção inline, quando seleciono um campo, então posso atribuí-lo a essa nova seção
+- [ ] Dado que salvo o formulário, quando o processo finaliza, então o formulário, as seções e as associações são persistidas corretamente
+
 
 ### US-002.1: Redesign da tabela People List com badges
 
@@ -125,9 +140,44 @@
 - [ ] IMPROVE-002: Implementar busca/filtro na People List
 - [ ] IMPROVE-003: Adicionar exportação de dados (CSV/Excel)
 
+---
+
+### EPIC-002: Melhorias de UX/UI
+**Status**: 🔄 Em Progresso
+
+**User Stories**:
+- [ ] US-002.4: Melhorar responsividade e Acessibilidade (Mobile First & WCAG)
+
+**Tasks Técnicas**:
+- [ ] TASK-002.4.1: Implementar Menu Mobile em `App.vue` (Hamburger Menu)
+- [ ] TASK-002.4.2: Transformar `PersonList` em Cards para Mobile
+- [ ] TASK-002.4.3: Adicionar atributos ARIA e `lang="pt-BR"`
+- [ ] TASK-002.4.4: Verificar contraste e tamanhos de fonte
+
 ### Baixa Prioridade
-- [ ] IMPROVE-004: Adicionar campo de busca no Dashboard
-- [ ] IMPROVE-005: Melhorar performance de queries com índices
+### EPIC-005: Tratamento de Erros e Validação
+**Status**: 🔄 Em Progresso
+**Descrição**: Melhorar o feedback de erros para o usuário, substituindo alerts por mensagens na interface.
+
+**User Stories**:
+- [ ] US-005.1: Exibir erros de validação e API na tela (Person Create)
+
+### US-005.1: Exibir erros de validação e API na tela (Person Create)
+
+**Como** usuário cadastrando uma pessoa
+**Quero** ver mensagens de erro claras na tela (não em popups)
+**Para** corrigir os dados sem interromper meu fluxo
+
+**Critérios de Aceitação**:
+- [ ] Dado que tento salvar com email duplicado, quando a API retorna 400, então vejo uma mensagem de erro vermelha no topo do formulário
+- [ ] Dado que existem erros de validação, quando clico em salvar, então os erros aparecem próximos aos campos ou no topo
+- [ ] Não devem ser usados `window.alert()`
+
+**Tasks**:
+- [ ] TASK-005.1.1: Criar componente de Alerta/Erro (UI)
+- [ ] TASK-005.1.2: Refatorar PersonCreate.vue para usar estado de erro local
+- [ ] TASK-005.1.3: Criar teste de componente para verificar exibição de erro
+
 
 ---
 

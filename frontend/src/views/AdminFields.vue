@@ -176,7 +176,7 @@ const form = ref({
   validation_rules: {}
 })
 
-const API_URL = 'http://localhost:8000/api'
+const API_URL = 'http://localhost:8001/api'
 
 const fetchFields = async () => {
   try {

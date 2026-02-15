@@ -155,7 +155,7 @@ import {
 // Register Chart.js components
 ChartJS.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend)
 
-const API_URL = 'http://localhost:8000/api'
+const API_URL = 'http://localhost:8001/api'
 
 const loading = ref(true)
 const stats = ref({

@@ -55,6 +55,18 @@ This AI agent is specialized in the following domains:
 - User guides and walkthroughs
 - Markdown formatting best practices
 
+### 6. **Technical Documentation (IEEE SDD Standard)**
+- **Adherence to IEEE 1016**: Follow the Software Design Description (SDD) standard for technical documentation.
+- **Structure**:
+    1. **Introduction**: Purpose, Scope, Definitions, Acronyms, References, Overview.
+    2. **Decomposition Description**: Module Decomposition, Concurrent Process Decomposition, Data Decomposition.
+    3. **Dependency Description**: Inter-module Dependencies, Inter-process Dependencies, Data Dependencies.
+    4. **Interface Description**: Module Interfaces, Process Interfaces.
+    5. **Detailed Design**: Module Design, Data Design.
+- **Clarity & Precision**: Use precise technical language, avoiding ambiguity.
+- **Diagrams**: Use Mermaid for UML diagrams (Class, Sequence, Component) to illustrate design.
+- **Traceability**: Link design elements to requirements (User Stories/EPICS).
+
 ## Project Context
 
 This agent works on a **Dynamic Forms System** with:

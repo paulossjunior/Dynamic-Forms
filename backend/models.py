@@ -25,18 +25,34 @@ class FormDefinition(Base):
     name = Column(String, unique=True, index=True)
     description = Column(String)
     
-    # Relationship to fields
+    # Relationships
     fields = relationship("FormFields", back_populates="form", cascade="all, delete-orphan")
+    sections = relationship("Section", back_populates="form", cascade="all, delete-orphan", order_by="Section.order_index")
+
+class Section(Base):
+    __tablename__ = "sections"
+    id = Column(Integer, primary_key=True, index=True)
+    form_id = Column(Integer, ForeignKey("forms.id"), nullable=False)
+    name = Column(String, nullable=False)
+    description = Column(String)
+    order_index = Column(Integer, default=0)
+
+    form = relationship("FormDefinition", back_populates="sections")
+    fields = relationship("FormFields", back_populates="section")
+
 
 class FormFields(Base):
     __tablename__ = "form_fields"
     form_id = Column(Integer, ForeignKey('forms.id'), primary_key=True)
     field_id = Column(Integer, ForeignKey('custom_field_definitions.id'), primary_key=True)
+    section_id = Column(Integer, ForeignKey('sections.id'), nullable=True)
     is_required = Column(Boolean, default=False)
     order = Column(Integer, default=0)
     
     form = relationship("FormDefinition", back_populates="fields")
     field = relationship("CustomFieldDefinition")
+    section = relationship("Section", back_populates="fields")
+
 
 class Person(Base):
     __tablename__ = "people"

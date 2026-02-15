@@ -1,6 +1,8 @@
 import os
 
-SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./sql_app.db")
+# Use /tmp for SQLite in serverless environments (read-only allowed only in /tmp)
+# But ideally, use a real DATABASE_URL (Postgres)
+SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:////tmp/sql_app.db")
 
 connect_args = {}
 if "sqlite" in SQLALCHEMY_DATABASE_URL:

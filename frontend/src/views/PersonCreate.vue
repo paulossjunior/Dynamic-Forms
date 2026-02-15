@@ -8,6 +8,22 @@
       <div class="mt-5 md:mt-0 md:col-span-2">
         <form @submit.prevent="savePerson">
           <div class="grid grid-cols-6 gap-6">
+
+            <!-- Error Alert -->
+            <div v-if="submitError" role="alert" class="col-span-6 bg-red-50 border-l-4 border-red-400 p-4 mb-4">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm text-red-700">
+                    {{ submitError }}
+                  </p>
+                </div>
+              </div>
+            </div>
             
             <!-- Template Selector -->
              <div class="col-span-6">
@@ -53,6 +69,7 @@
                <h4 class="text-sm font-medium text-gray-900 mb-4 uppercase tracking-wider">Additional Information</h4>
                <FormRenderer 
                   :fields="customFields" 
+                  :sections="formSections"
                   v-model="form.custom_data"
                   :errors="errors"
                />
@@ -86,7 +103,10 @@ const router = useRouter()
 const templates = ref([])
 const selectedFormId = ref(null)
 const customFields = ref([])
+const formSections = ref([])
 const errors = ref({})
+const submitError = ref(null)
+
 
 const form = ref({
   name: '',
@@ -94,7 +114,7 @@ const form = ref({
   custom_data: {}
 })
 
-const API_URL = 'http://localhost:8000/api'
+const API_URL = 'http://localhost:8001/api'
 
 onMounted(async () => {
   try {
@@ -124,6 +144,7 @@ const onFormSelect = async () => {
         // Map the fields from the association object
         customFields.value = response.data.fields.map(assoc => {
             const field = { ...assoc.field } // Create a copy of the field definition
+            field.section_id = assoc.section_id // Attach section_id from association
             
             // Check if form requires this field
             if (assoc.is_required) {
@@ -141,6 +162,9 @@ const onFormSelect = async () => {
             }
             return field
         })
+        
+        formSections.value = response.data.sections || []
+
         
         // Reset custom data and errors
         form.value.custom_data = {}
@@ -224,10 +248,12 @@ const savePerson = async () => {
     console.error('Error saving person:', error)
     
     // Handle specific error cases
-    if (error.response?.status === 500 && error.response?.data?.detail?.includes('UNIQUE constraint failed: people.email')) {
-      alert('❌ Este email já está cadastrado. Por favor, use um email diferente.')
+    if (error.response?.status === 400 && error.response?.data?.detail) {
+        submitError.value = error.response.data.detail
+    } else if (error.response?.status === 500 && error.response?.data?.detail?.includes('UNIQUE constraint failed: people.email')) {
+      submitError.value = 'Este email já está cadastrado. Por favor, use um email diferente.'
     } else {
-      alert('❌ Erro ao salvar pessoa: ' + (error.response?.data?.detail || error.message))
+      submitError.value = 'Erro ao salvar pessoa: ' + (error.response?.data?.detail || error.message)
     }
   }
 }

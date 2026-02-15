@@ -45,6 +45,32 @@
 
 ---
 
+### EPIC-004: Sistema de Seções em Formulários
+**Status**: 🔄 Em Planejamento  
+**Descrição**: Permitir organização de formulários em seções lógicas com nome, descrição e conjunto de campos agrupados
+
+**Valor de Negócio**: Melhorar UX de formulários complexos através de agrupamento lógico de campos, facilitando compreensão e preenchimento
+
+**Critérios de Aceitação da EPIC**:
+- [ ] Admin pode criar seções com nome e descrição
+- [ ] Admin pode associar campos a seções
+- [ ] Admin pode reordenar seções
+- [ ] Usuário vê formulários organizados em seções visuais
+- [ ] Seções sem campos não aparecem no formulário
+
+**User Stories**:
+- [ ] US-004.1: Criar e Gerenciar Seções (Admin)
+- [ ] US-004.2: Visualizar Formulário com Seções (Usuário)
+
+**Tasks Técnicas**:
+- [ ] TASK-004.1.1: Implementar Domain Layer - Section Entity
+- [ ] TASK-004.1.2: Implementar Application Layer - Section Use Cases
+- [ ] TASK-004.1.3: Implementar Infrastructure Layer - Database & Repository
+- [ ] TASK-004.1.4: Implementar UI Layer - Section Management
+- [ ] TASK-004.2.1: Implementar UI - Form Renderer com Seções
+
+---
+
 ## 📝 User Stories Detalhadas
 
 ### US-002.1: Redesign da tabela People List com badges
@@ -107,7 +133,7 @@
 
 ## 📊 Métricas
 
-**Sprint Atual**: N/A  
+**Sprint Atual**: Sprint 2 - Form Sections  
 **Velocity**: N/A  
 **Burndown**: N/A
 
@@ -115,8 +141,9 @@
 - EPIC-001: Sistema de Formulários Dinâmicos (100%)
 
 **Em Progresso**:
-- Nenhum
+- EPIC-004: Sistema de Seções em Formulários (0% - Planejamento)
 
 **Planejado**:
 - EPIC-002: Melhorias de UX/UI
 - EPIC-003: Arquitetura Hexagonal
+

@@ -1,6 +1,7 @@
 <template>
   <div class="flex flex-col">
-    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <!-- Desktop Table -->
+    <div class="hidden md:block -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
       <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
           <table class="min-w-full divide-y divide-gray-200">
@@ -30,6 +31,37 @@
         </div>
       </div>
     </div>
+
+    <!-- Mobile Cards -->
+    <div class="md:hidden space-y-4">
+      <div v-for="person in people" :key="person.id" class="bg-white shadow rounded-lg p-4 border border-gray-200">
+        <div class="flex items-center space-x-3 mb-3">
+          <div class="flex-shrink-0">
+            <div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-bold">
+              {{ person.name.charAt(0).toUpperCase() }}
+            </div>
+          </div>
+          <div>
+             <h3 class="text-sm font-medium text-gray-900">{{ person.name }}</h3>
+             <p class="text-sm text-gray-500 truncate">{{ person.email }}</p>
+          </div>
+        </div>
+        <div v-if="person.custom_data" class="mt-2 border-t border-gray-100 pt-2">
+           <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">Details</p>
+           <dl class="grid grid-cols-1 gap-x-4 gap-y-2 sm:grid-cols-2">
+             <div v-for="item in parseCustomData(person.custom_data)" :key="item.key" class="sm:col-span-1">
+               <dt class="text-xs font-medium text-gray-500 capitalize">{{ item.key.replace(/_/g, ' ') }}</dt>
+               <dd class="mt-1 text-sm text-gray-900">{{ item.value }}</dd>
+             </div>
+           </dl>
+        </div>
+      </div>
+      
+      <div v-if="people.length === 0" class="text-center py-10 bg-white rounded-lg shadow">
+          <p class="text-gray-500 text-sm">No people found.</p>
+          <router-link to="/create" class="mt-2 inline-block text-green-600 hover:text-green-900 font-medium text-sm">Create one?</router-link>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -38,7 +70,7 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
 const people = ref([])
-const API_URL = 'http://localhost:8000/api'
+const API_URL = 'http://localhost:8001/api'
 
 onMounted(async () => {
   try {
@@ -49,12 +81,12 @@ onMounted(async () => {
   }
 })
 
-const formatJSON = (jsonString) => {
+const parseCustomData = (jsonString) => {
     try {
         const obj = JSON.parse(jsonString)
-        return JSON.stringify(obj, null, 2)
+        return Object.entries(obj).map(([key, value]) => ({ key, value }))
     } catch(e) {
-        return jsonString
+        return []
     }
 }
 </script>

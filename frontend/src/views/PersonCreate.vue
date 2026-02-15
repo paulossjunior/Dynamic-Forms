@@ -221,7 +221,15 @@ const savePerson = async () => {
     await axios.post(`${API_URL}/people/`, payload)
     router.push('/')
   } catch (error) {
-    alert('Error saving person: ' + (error.response?.data?.detail || error.message))
+    console.error('Error saving person:', error)
+    
+    // Handle specific error cases
+    if (error.response?.status === 500 && error.response?.data?.detail?.includes('UNIQUE constraint failed: people.email')) {
+      alert('❌ Este email já está cadastrado. Por favor, use um email diferente.')
+    } else {
+      alert('❌ Erro ao salvar pessoa: ' + (error.response?.data?.detail || error.message))
+    }
   }
 }
+
 </script>
